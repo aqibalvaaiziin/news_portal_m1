@@ -1,0 +1,59 @@
+name: news
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  another_flushbar: ^1.10.20
+  carousel_slider: ^3.0.0
+  connectivity: ^3.0.3
+  cupertino_icons: ^1.0.2
+  dio: ^4.0.0
+  double_back_to_close_app: ^2.0.1
+  flutter_html: ^1.3.0
+  flutter_icons: ^1.1.0
+  flutter_redux: ^0.8.2
+  flutter_share: ^2.0.0
+  flutter_speed_dial: ^3.0.5
+  redux: ^5.0.0
+  redux_logging: ^0.5.0
+  shared_preferences: ^2.0.5
+  shimmer: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: sarabun
+      fonts:
+        - asset: assets/fonts/sarabun/Sarabun-Regular.ttf
+        - asset: assets/fonts/sarabun/Sarabun-MediumItalic.ttf
+          style: italic
+        - asset: assets/fonts/sarabun/Sarabun-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/sarabun/Sarabun-Bold.ttf
+          weight: 700
+    - family: montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat-Regular.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Italic.ttf
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/montserrat/Montserrat-Bold.ttf
+          weight: 700
