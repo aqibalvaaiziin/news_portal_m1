@@ -4,7 +4,9 @@ import 'package:flutter_html/style.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:news/helpers/global.dart';
 import 'package:news/widgets/custom_widet.dart';
+import 'package:news/widgets/reoute_navigator.dart';
 import 'package:news/widgets/shimmer/read_news_shimmer.dart';
+import 'package:news/widgets/webview_page.dart';
 import './read_news_page_view_model.dart';
 
 class ReadNewsPageView extends ReadNewsPageViewModel {
@@ -23,6 +25,7 @@ class ReadNewsPageView extends ReadNewsPageViewModel {
                     children: [
                       buildImageHeader(),
                       buildTitle(),
+                      buildPublisher(),
                       buildNews(),
                       SizedBox(height: height * 0.18)
                     ],
@@ -203,6 +206,68 @@ class ReadNewsPageView extends ReadNewsPageViewModel {
         dataNews.title,
         fw: FontWeight.bold,
         th: 1.2,
+      ),
+    );
+  }
+
+  Widget buildPublisher() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: width * 0.08),
+      alignment: Alignment.centerLeft,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                dataNews.publisher.contains("Tribunnews")
+                    ? ImagePublisher.tribun
+                    : dataNews.publisher.contains("Detik")
+                        ? ImagePublisher.detik
+                        : dataNews.publisher.contains("Okezone")
+                            ? ImagePublisher.okezones
+                            : dataNews.publisher.contains("Merdeka")
+                                ? ImagePublisher.merdeka
+                                : ImagePublisher.liputan,
+                width: width * 0.05,
+              ),
+              SizedBox(width: width * 0.01),
+              montserratText(
+                width * 0.033 + indicator,
+                dataNews.publisher,
+                fw: FontWeight.bold,
+                th: 1.2,
+              ),
+            ],
+          ),
+          buildLinkButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildLinkButton() {
+    return Container(
+      width: width * 0.17,
+      height: height * 0.035,
+      child: MaterialButton(
+        padding: EdgeInsets.zero,
+        onPressed: () {
+          nextPage(
+            context,
+            WebviewNews(
+              url: dataNews.link,
+              title: dataNews.title,
+            ),
+          );
+        },
+        color: ClassColors.maincolor,
+        child: sarabunText(
+          width * 0.03,
+          "Sumber",
+          fw: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }

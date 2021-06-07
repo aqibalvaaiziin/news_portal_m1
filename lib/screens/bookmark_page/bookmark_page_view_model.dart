@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:news/api/services/user_service.dart';
@@ -23,31 +25,45 @@ abstract class BookmarkPageViewModel extends State<BookmarkPage> {
   bool isLoggedIn = true;
   bool isLoading = true;
   bool isLoginLoading = false;
-  bool isHaveToken;
+  bool isHaveToken = true;
   List<AllNews> bookmarkList;
   Store<AppState> store;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  String data = "";
 
   checkToken() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      isHaveToken = sp.getString("token") == null ? false : true;
+      // isHaveToken = sp.getString("token") == null ? false : true;
       if (isHaveToken) {
         getDataBookMark();
       }
     });
   }
 
-  getDataBookMark() {
-    userServices.getBookmark().then((value) {
-      var jsonObject = AllNewsList.fromJson(value.data);
-      setState(() {
-        store.dispatch(SetBookmarkList(bookmarkList));
-        store.dispatch(SetBookmarkList(List.from(jsonObject.data)));
-        isLoading = false;
-      });
+  getDataBookmarkPref() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    // sp.clear();
+    setState(() {
+      data = sp.getString("bookmark");
+      isLoading = false;
     });
+  }
+
+  getDataBookMark() async {
+    // userServices.getBookmark().then((value) {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String data = sp.getString("bookmark");
+
+    List dataObject = data.split(",  ");
+
+    setState(() {
+      store.dispatch(SetBookmarkList(bookmarkList));
+      // store.dispatch(SetBookmarkList());
+      isLoading = false;
+    });
+    // });
   }
 
   loginAction() async {
@@ -113,7 +129,10 @@ abstract class BookmarkPageViewModel extends State<BookmarkPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       store = StoreProvider.of<AppState>(context);
-      checkToken();
+      // checkToken();
+      getDataBookMark();
+      // getDataBookmarkPref();
+
       if (widget.isFromRegister) {
         successRegister();
       }

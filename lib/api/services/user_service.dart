@@ -1,4 +1,5 @@
 import 'package:news/api/interceptor/remote_interceptor.dart';
+import 'package:news/helpers/preferences/preferences_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices extends Api {
@@ -58,22 +59,27 @@ class UserServices extends Api {
     return response;
   }
 
-  Future addBookmark(String idNews) async {
+  Future addBookmark(String news) async {
+    PreferencesData preferencesData = PreferencesData();
     SharedPreferences sp = await SharedPreferences.getInstance();
-    String token = sp.getString("token");
-    print("token :$token");
-    dio.options.headers['Authorization'] = "bearer $token";
-    Map<String, dynamic> dataMap = {
-      "news": idNews,
-    };
-    final response = await wrapApi(
-      () => dio.post<dynamic>(
-        '/bookmark',
-        data: dataMap,
-      ),
-    );
-    print("response:$response");
-    return response;
+    String oldData = sp.getString("bookmark");
+    String notANewsData = oldData == "" ? "$news" : "$oldData";
+    String newData = oldData == "" ? "$news" : "$notANewsData,  $news";
+    preferencesData.setBookmark(newData);
+    // String token = sp.getString("token");
+    // print("token :$token");
+    // dio.options.headers['Authorization'] = "bearer $token";
+    // Map<String, dynamic> dataMap = {
+    //   "news": idNews,
+    // };
+    // final response = await wrapApi(
+    //   () => dio.post<dynamic>(
+    //     '/bookmark',
+    //     data: dataMap,
+    //   ),
+    // );
+    // print("response:$response");
+    // return response;
   }
 
   Future removeBookmark(String idNews) async {

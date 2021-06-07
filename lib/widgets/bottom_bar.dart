@@ -66,23 +66,6 @@ Widget customNavigationBar(
                 fontSize: 12),
           ),
         ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
-            color:
-                (currentPage == 3) ? ClassColors.maincolor : ClassColors.black,
-            size: sizeIconNav,
-          ),
-          // ignore: deprecated_member_use
-          title: Text(
-            "Profile",
-            style: TextStyle(
-                color: (currentPage == 3)
-                    ? ClassColors.maincolor
-                    : ClassColors.black,
-                fontSize: 12),
-          ),
-        ),
       ],
       currentIndex: currentPage,
       onTap: navigationTapped,

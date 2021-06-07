@@ -25,24 +25,17 @@ class CustomScaffold extends StatefulWidget {
 }
 
 class _CustomScaffoldState extends State<CustomScaffold> {
-  Future<bool> onPop() async {
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: WillPopScope(
-        onWillPop: onPop,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: widget.appBar,
-          key: widget.scaffoldKey,
-          body: widget.body,
-          floatingActionButton: widget.floatingActionButton,
-          floatingActionButtonLocation: widget.floatingActionButtonLocation,
-          bottomNavigationBar: widget.bottomNavigationBar,
-        ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: widget.appBar,
+        key: widget.scaffoldKey,
+        body: widget.body,
+        floatingActionButton: widget.floatingActionButton,
+        floatingActionButtonLocation: widget.floatingActionButtonLocation,
+        bottomNavigationBar: widget.bottomNavigationBar,
       ),
     );
   }

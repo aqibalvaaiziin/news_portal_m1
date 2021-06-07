@@ -31,4 +31,9 @@ class PreferencesData {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setInt("userId", userId);
   }
+
+  Future setBookmark(String dataNews) async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString("bookmark", dataNews);
+  }
 }

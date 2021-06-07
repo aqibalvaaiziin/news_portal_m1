@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -185,7 +187,7 @@ class HomePageView extends HomePageViewModel {
                         scrollDirection: Axis.horizontal,
                       ),
                       itemCount: selectedList.length,
-                      itemBuilder: (BuildContext context, int i,int index) {
+                      itemBuilder: (BuildContext context, int i, int index) {
                         AllNews data = selectedList[i];
                         // if (topicsValue == 1) {
                         //   if (data.topic.contains("travel")) {
@@ -322,29 +324,27 @@ class HomePageView extends HomePageViewModel {
                     color: Colors.white,
                     fw: FontWeight.w600,
                   ),
-                  isHaveToken
-                      ? InkWell(
-                          borderRadius: BorderRadius.circular(width * 0.011),
-                          child: Padding(
-                            padding: EdgeInsets.all(width * 0.01),
-                            child: Icon(
-                              data.isBookmark
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border,
-                              size: width * 0.05,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onTap: () {
-                            print("topicsValue  : $topicsValue");
-                            if (data.isBookmark) {
-                              bookmarkSlider(data.sId, isAdd: false);
-                            } else {
-                              bookmarkSlider(data.sId);
-                            }
-                          },
-                        )
-                      : SizedBox()
+                  InkWell(
+                    borderRadius: BorderRadius.circular(width * 0.011),
+                    child: Padding(
+                      padding: EdgeInsets.all(width * 0.01),
+                      child: Icon(
+                        data.isBookmark
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                        size: width * 0.05,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      print("topicsValue  : $topicsValue");
+                      if (data.isBookmark) {
+                        bookmarkSlider(jsonEncode(data), isAdd: false);
+                      } else {
+                        bookmarkSlider(jsonEncode(data));
+                      }
+                    },
+                  )
                 ],
               ),
             )

@@ -21,44 +21,58 @@ class BookmarkPageView extends BookmarkPageViewModel {
       builder: (context, state) {
         return CustomScaffold(
           scaffoldKey: scaffoldKey,
-          body: isHaveToken == null
-              ? SearchShimmer()
-              : isHaveToken
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          isLoading
-                              ? SearchShimmer()
-                              : state.bookmarkList == null
-                                  ? SearchShimmer()
-                                  : state.bookmarkList.isEmpty
-                                      ? SizedBox(
-                                          width: width,
-                                          height: height * 0.9,
-                                          child: Center(
-                                            child: sarabunText(
-                                              width * 0.05,
-                                              "Bookmark Kosong",
-                                              fw: FontWeight.bold,
-                                            ),
-                                          ),
-                                        )
-                                      : Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: width * 0.03,
-                                              vertical: height * 0.02),
-                                          child: BuildCardList(
-                                            isLoading: false,
-                                            list: state.bookmarkList,
-                                            listFrom: "bookmark",
-                                          ),
-                                        )
-                        ],
-                      ),
-                    )
-                  : buildUnloginPage(),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                isLoading
+                    ? SearchShimmer()
+                    : state.bookmarkList == null
+                        ? SearchShimmer()
+                        // : checkerPref()
+                : buildList(state)
+              ],
+            ),
+          ),
         );
       },
+    );
+  }
+
+  Widget buildList(NewsState state) {
+    return state.bookmarkList.isEmpty
+        ? SizedBox(
+            width: width,
+            height: height * 0.9,
+            child: Center(
+              child: sarabunText(
+                width * 0.05,
+                "Bookmark Kosong",
+                fw: FontWeight.bold,
+              ),
+            ),
+          )
+        : Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.03, vertical: height * 0.02),
+            child: BuildCardList(
+              isLoading: false,
+              list: state.bookmarkList,
+              listFrom: "bookmark",
+            ),
+          );
+  }
+
+  Widget checkerPref() {
+    return Column(
+      children: [
+        Text(data.toString()),
+        ElevatedButton(
+          onPressed: () {
+            preferencesData.setBookmark("");
+          },
+          child: Text("hapus"),
+        ),
+      ],
     );
   }
 

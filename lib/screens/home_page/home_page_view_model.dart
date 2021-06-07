@@ -66,7 +66,8 @@ abstract class HomePageViewModel extends State<HomePage> {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
       image = sp.getString("image");
-      isHaveToken = sp.getString("token") == null ? false : true;
+      // isHaveToken = sp.getString("token") == null ? false : true;
+      isHaveToken = false;
       topicsValue = isHaveToken ? 1 : 0;
     });
   }

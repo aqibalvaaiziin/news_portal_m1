@@ -25,6 +25,14 @@ class ImageBoarding {
   static String travel = "assets/images/travel.jpg";
 }
 
+class ImagePublisher {
+  static String detik = "assets/images/detik.jpg";
+  static String liputan = "assets/images/liputan.png";
+  static String merdeka = "assets/images/merdeka.jpg";
+  static String okezones = "assets/images/okezones.jpg";
+  static String tribun = "assets/images/tribun.png";
+}
+
 class Constants {
   Constants._();
   static const double padding = 20;
