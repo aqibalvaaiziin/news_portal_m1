@@ -9,6 +9,7 @@ import 'package:news/widgets/custom_widet.dart';
 import 'package:news/widgets/global_widget.dart';
 import 'package:news/widgets/reoute_navigator.dart';
 import 'package:news/widgets/shimmer/search_shimmer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './bookmark_page_view_model.dart';
 
 class BookmarkPageView extends BookmarkPageViewModel {
@@ -26,10 +27,8 @@ class BookmarkPageView extends BookmarkPageViewModel {
               children: [
                 isLoading
                     ? SearchShimmer()
-                    : state.bookmarkList == null
-                        ? SearchShimmer()
-                        // : checkerPref()
-                : buildList(state)
+                    //  : checkerPref()
+                    : buildList(state)
               ],
             ),
           ),
@@ -64,11 +63,15 @@ class BookmarkPageView extends BookmarkPageViewModel {
 
   Widget checkerPref() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(data.toString()),
+        Text("news: $dataNews"),
+        SizedBox(height: height * 0.1),
+        Text("topic: $dataTopic"),
         ElevatedButton(
-          onPressed: () {
-            preferencesData.setBookmark("");
+          onPressed: () async {
+            SharedPreferences sp = await SharedPreferences.getInstance();
+            sp.clear();
           },
           child: Text("hapus"),
         ),

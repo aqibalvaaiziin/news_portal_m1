@@ -2,8 +2,8 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:news/screens/bookmark_page/bookmark_page.dart';
 import 'package:news/screens/home_page/home_page.dart';
-import 'package:news/screens/profile_page/profile_page.dart';
 import 'package:news/screens/search_page/search_page.dart';
+import 'package:news/screens/topic_list_page/topic_list_page.dart';
 import 'package:news/widgets/bottom_bar.dart';
 import 'package:news/widgets/custom_widet.dart';
 import './navigator_page_view_model.dart';
@@ -27,7 +27,7 @@ class NavigatorPageView extends NavigatorPageViewModel {
             HomePage(),
             SearchPage(),
             BookmarkPage(isFromRegister: widget.isFromRegister),
-            ProfilePage(isFromRegister: widget.isFromRegister),
+            TopicListPage(),
           ],
         ),
       ),

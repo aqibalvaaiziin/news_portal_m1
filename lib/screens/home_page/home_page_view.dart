@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -339,9 +337,12 @@ class HomePageView extends HomePageViewModel {
                     onTap: () {
                       print("topicsValue  : $topicsValue");
                       if (data.isBookmark) {
-                        bookmarkSlider(jsonEncode(data), isAdd: false);
+                        bookmarkSlider(
+                          data.sId.toString(),
+                          isAdd: false,
+                        );
                       } else {
-                        bookmarkSlider(jsonEncode(data));
+                        bookmarkSlider(data.sId.toString());
                       }
                     },
                   )

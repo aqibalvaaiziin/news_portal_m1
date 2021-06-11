@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:news/helpers/global.dart';
 import 'package:news/models/topics_model.dart';
-import 'package:news/redux/actions/topics_state_action.dart';
 import 'package:news/redux/models/app_state_model.dart';
 import 'package:news/redux/models/topics_state_model.dart';
+import 'package:news/screens/list_publisher_and_topics_page/list_publisher_and_topics_page.dart';
 import 'package:news/widgets/custom_widet.dart';
+import 'package:news/widgets/reoute_navigator.dart';
 import 'package:news/widgets/shimmer/search_shimmer.dart';
 import './topic_list_page_view_model.dart';
 
@@ -19,6 +20,16 @@ class TopicListPageView extends TopicListPageViewModel {
       converter: (store) => store.state.topicsState,
       builder: (context, state) {
         return CustomScaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: sarabunText(
+              width * 0.05,
+              "Pilih Topic Untuk Rekomendasi Anda",
+              fw: FontWeight.w800,
+            ),
+            centerTitle: true,
+          ),
           body: state.topicsList.isEmpty
               ? SearchShimmer()
               : Stack(
@@ -27,17 +38,6 @@ class TopicListPageView extends TopicListPageViewModel {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: width * 0.03,
-                              vertical: height * 0.03,
-                            ),
-                            child: sarabunText(
-                              width * 0.05,
-                              "Pilih Topic Untuk Rekomendasi Anda",
-                              fw: FontWeight.w800,
-                            ),
-                          ),
                           buildListTopics(state.topicsList),
                           SizedBox(height: height * 0.1),
                         ],
@@ -46,9 +46,6 @@ class TopicListPageView extends TopicListPageViewModel {
                     isLoading ? isLoadAction(width, height) : SizedBox()
                   ],
                 ),
-          floatingActionButton: buttonFinish(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
         );
       },
     );
@@ -61,12 +58,12 @@ class TopicListPageView extends TopicListPageViewModel {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, i) {
-        return itemTopics(list[i]);
+        return itemTopics(list[i], i);
       },
     );
   }
 
-  Widget itemTopics(TopicModel data) {
+  Widget itemTopics(TopicModel data, int index) {
     return Container(
       width: width,
       height: height * 0.13,
@@ -91,11 +88,26 @@ class TopicListPageView extends TopicListPageViewModel {
         child: MaterialButton(
           padding: EdgeInsets.all(width * 0.03),
           onPressed: () {
-            setState(() {
-              if (data.name != "News") {
-                store.dispatch(RemoveItemFromTopicsList(data.sId));
-              }
-            });
+            String topicValue = index == 1
+                ? "news"
+                : index == 2
+                    ? "tech"
+                    : index == 3
+                        ? "seleb"
+                        : index == 4
+                            ? "health"
+                            : index == 5
+                                ? "travel"
+                                : "sport";
+            nextPage(
+              context,
+              ListPublisherAndTopicsPage(
+                from: "topic",
+                image: ImageBoarding.newspaper,
+                name: data.name,
+                topicName: topicValue,
+              ),
+            );
           },
           child: Row(
             children: [
@@ -120,93 +132,46 @@ class TopicListPageView extends TopicListPageViewModel {
               ),
               SizedBox(width: width * 0.04),
               Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  sarabunText(
-                    width * 0.05,
-                    data.name == "Techno"
-                        ? "Teknologi"
-                        : data.name == "News"
-                            ? "News"
-                            : data.name == "Seleb"
-                                ? "Selebriti"
-                                : data.name == "Health"
-                                    ? "Kesehatan"
-                                    : data.name == "Sport"
-                                        ? "OlahRaga"
-                                        : "Travel",
-                    fw: FontWeight.bold,
-                  ),
-                  SizedBox(height: height * 0.01),
-                  SizedBox(
-                    width: width * 0.5,
-                    child: sarabunText(
-                      width * 0.033,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    sarabunText(
+                      width * 0.05,
                       data.name == "Techno"
-                          ? techDesc
+                          ? "Teknologi"
                           : data.name == "News"
-                              ? newsDesc
+                              ? "News"
                               : data.name == "Seleb"
-                                  ? selebDesc
+                                  ? "Selebriti"
                                   : data.name == "Health"
-                                      ? healthDesc
+                                      ? "Kesehatan"
                                       : data.name == "Sport"
-                                          ? sportDesc
-                                          : travelDesc,
+                                          ? "OlahRaga"
+                                          : "Travel",
+                      fw: FontWeight.bold,
                     ),
-                  ),
-                ],
-              )),
-              SizedBox(width: width * 0.02),
-              data.isSelected
-                  ? Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                    )
-                  : SizedBox()
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buttonFinish() {
-    return Container(
-      width: width,
-      height: height * 0.08,
-      decoration: BoxDecoration(
-        color: ClassColors.maincolor,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(width * 0.1),
-          topLeft: Radius.circular(width * 0.1),
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(width * 0.1),
-          topLeft: Radius.circular(width * 0.1),
-        ),
-        child: MaterialButton(
-          onPressed: () {
-            chooseTopicAction();
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              sarabunText(
-                width * 0.045,
-                "Lanjut Baca  ",
-                fw: FontWeight.bold,
-                color: Colors.white,
+                    SizedBox(height: height * 0.01),
+                    SizedBox(
+                      width: width * 0.5,
+                      child: sarabunText(
+                        width * 0.033,
+                        data.name == "Techno"
+                            ? techDesc
+                            : data.name == "News"
+                                ? newsDesc
+                                : data.name == "Seleb"
+                                    ? selebDesc
+                                    : data.name == "Health"
+                                        ? healthDesc
+                                        : data.name == "Sport"
+                                            ? sportDesc
+                                            : travelDesc,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Icon(
-                Icons.exit_to_app,
-                color: Colors.white,
-                size: width * 0.05,
-              )
             ],
           ),
         ),

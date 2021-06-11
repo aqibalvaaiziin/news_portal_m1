@@ -14,27 +14,30 @@ class ReadNewsPageView extends ReadNewsPageViewModel {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    return CustomScaffold(
-      scaffoldKey: scaffoldKey,
-      body: dataNews == null
-          ? ReadNewsShimmer()
-          : Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      buildImageHeader(),
-                      buildTitle(),
-                      buildPublisher(),
-                      buildNews(),
-                      SizedBox(height: height * 0.18)
-                    ],
+    return WillPopScope(
+      onWillPop: onPop,
+          child: CustomScaffold(
+        scaffoldKey: scaffoldKey,
+        body: dataNews == null
+            ? ReadNewsShimmer()
+            : Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        buildImageHeader(),
+                        buildTitle(),
+                        buildPublisher(),
+                        buildNews(),
+                        SizedBox(height: height * 0.18)
+                      ],
+                    ),
                   ),
-                ),
-                isLoading ? isLoadActionPage(width, height) : SizedBox()
-              ],
-            ),
-      floatingActionButton: dataNews == null ? SizedBox() : dialButton(),
+                  isLoading ? isLoadActionPage(width, height) : SizedBox()
+                ],
+              ),
+        floatingActionButton: dataNews == null ? SizedBox() : dialButton(),
+      ),
     );
   }
 
@@ -144,24 +147,22 @@ class ReadNewsPageView extends ReadNewsPageViewModel {
                   }),
               Row(
                 children: [
-                  isHaveToken
-                      ? InkWell(
-                          borderRadius: BorderRadius.circular(width * 0.01),
-                          child: Padding(
-                            padding: EdgeInsets.all(width * 0.02),
-                            child: Icon(
-                              dataNews.isBookmark
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border_outlined,
-                              size: width * 0.055,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onTap: () {
-                            addToBookMark();
-                          },
-                        )
-                      : SizedBox(),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(width * 0.01),
+                    child: Padding(
+                      padding: EdgeInsets.all(width * 0.02),
+                      child: Icon(
+                        dataNews.isBookmark
+                            ? Icons.bookmark
+                            : Icons.bookmark_border_outlined,
+                        size: width * 0.055,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      addToBookMark();
+                    },
+                  ),
                   InkWell(
                     borderRadius: BorderRadius.circular(width * 0.01),
                     child: Padding(

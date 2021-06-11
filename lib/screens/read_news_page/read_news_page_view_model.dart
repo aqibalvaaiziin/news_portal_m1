@@ -34,6 +34,21 @@ abstract class ReadNewsPageViewModel extends State<ReadNewsPage> {
     });
   }
 
+  Future<bool> onPop() async {
+    if (widget.isFromBookmark) {
+      if (widget.from == "home") {
+        nextPageRemove(context, NavigatorPage(currentPage: 0));
+      } else if (widget.from == "search") {
+        nextPageRemove(context, NavigatorPage(currentPage: 1));
+      } else if (widget.from == "bookmark") {
+        nextPageRemove(context, NavigatorPage(currentPage: 2));
+      }
+    } else {
+      backScreen(context);
+    }
+    return true;
+  }
+
   backScreenAction() {
     if (widget.isFromBookmark) {
       if (widget.from == "home") {
@@ -108,7 +123,7 @@ abstract class ReadNewsPageViewModel extends State<ReadNewsPage> {
   }
 
   showAlert() {
-  // ignore: deprecated_member_use
+    // ignore: deprecated_member_use
     scaffoldKey.currentState.showSnackBar(
       SnackBar(
         backgroundColor: Colors.green,

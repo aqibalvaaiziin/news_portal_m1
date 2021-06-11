@@ -66,6 +66,23 @@ Widget customNavigationBar(
                 fontSize: 12),
           ),
         ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.list,
+            color:
+                (currentPage == 3) ? ClassColors.maincolor : ClassColors.black,
+            size: sizeIconNav,
+          ),
+          // ignore: deprecated_member_use
+          title: Text(
+            "Topics",
+            style: TextStyle(
+                color: (currentPage == 3)
+                    ? ClassColors.maincolor
+                    : ClassColors.black,
+                fontSize: 12),
+          ),
+        ),
       ],
       currentIndex: currentPage,
       onTap: navigationTapped,

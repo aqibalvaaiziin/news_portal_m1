@@ -6,66 +6,59 @@ import 'package:news/screens/register_page/register_page.dart';
 import 'package:news/widgets/custom_widet.dart';
 import 'package:news/widgets/reoute_navigator.dart';
 import 'package:news/widgets/shimmer/profile_shimmer.dart';
-import 'profile_page_view_model.dart';
+import 'topic_page_view_model.dart';
 
-class ProfilePageView extends ProfilePageViewModel {
+class TopicPageView extends TopicPageViewModel {
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return CustomScaffold(
-        scaffoldKey: scaffoldKey,
-        body: isHaveToken == null
-            ? ProfileShimmer()
-            : isHaveToken
-                ? isLoading
-                    ? ProfileShimmer()
-                    : Stack(
-                        children: [
-                          buildHeaderProfile(),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              width: width,
-                              height: height * 0.46,
-                              padding: EdgeInsets.fromLTRB(
-                                width * 0.06,
-                                height * 0.05,
-                                width * 0.06,
-                                0,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(width * 0.1),
-                                    topLeft: Radius.circular(width * 0.1),
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey[300],
-                                      offset: Offset(0, -2),
-                                      blurRadius: 2,
-                                    ),
-                                  ]),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildBoxTopic(),
-                                    SizedBox(height: height * 0.06),
-                                    logoutButton(),
-                                    SizedBox(height: height * 0.03),
-                                  ],
-                                ),
-                              ),
-                            ),
+      scaffoldKey: scaffoldKey,
+      body: isLoading
+          ? ProfileShimmer()
+          : Stack(
+              children: [
+                buildHeaderProfile(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: width,
+                    height: height * 0.46,
+                    padding: EdgeInsets.fromLTRB(
+                      width * 0.06,
+                      height * 0.05,
+                      width * 0.06,
+                      0,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(width * 0.1),
+                          topLeft: Radius.circular(width * 0.1),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey[300],
+                            offset: Offset(0, -2),
+                            blurRadius: 2,
                           ),
-                          topicLoading
-                              ? isLoadActionPage(width, height)
-                              : SizedBox()
+                        ]),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          buildBoxTopic(),
+                          SizedBox(height: height * 0.06),
                         ],
-                      )
-                : buildUnloginPage());
+                      ),
+                    ),
+                  ),
+                ),
+                topicLoading ? isLoadActionPage(width, height) : SizedBox()
+              ],
+            ),
+    );
   }
 
   Widget buildHeaderProfile() {
@@ -94,13 +87,13 @@ class ProfilePageView extends ProfilePageViewModel {
               SizedBox(height: height * 0.02),
               montserratText(
                 width * 0.055,
-                name,
+                "Hi There",
                 fw: FontWeight.bold,
               ),
               SizedBox(height: height * 0.015),
               montserratText(
                 width * 0.035,
-                email,
+                "Happy Reading",
               ),
             ],
           ),
@@ -438,31 +431,6 @@ class ProfilePageView extends ProfilePageViewModel {
           ),
         ),
       ],
-    );
-  }
-
-  Widget logoutButton() {
-    return Container(
-      width: width,
-      height: height * 0.055,
-      decoration: BoxDecoration(
-        color: ClassColors.maincolor,
-        borderRadius: BorderRadius.circular(width * 0.02),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(width * 0.02),
-        child: MaterialButton(
-          onPressed: () {
-            logoutAction();
-          },
-          child: montserratText(
-            width * 0.035,
-            "Keluar",
-            fw: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      ),
     );
   }
 

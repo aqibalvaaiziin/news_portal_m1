@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:news/helpers/preferences/preferences_data.dart';
 import 'package:news/redux/models/app_state_model.dart';
 import 'package:news/redux/store_data.dart';
 import 'package:news/widgets/splash_scree.dart';
 import 'package:redux/redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Store<AppState> _store = await createStore();
+  SharedPreferences sp = await SharedPreferences.getInstance();
+  PreferencesData preferencesData = PreferencesData();
+  if (sp.getString("bookmark") == null) {
+    preferencesData.setBookmark("");
+  }
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:news/api/services/user_service.dart';
@@ -26,44 +24,43 @@ abstract class BookmarkPageViewModel extends State<BookmarkPage> {
   bool isLoading = true;
   bool isLoginLoading = false;
   bool isHaveToken = true;
-  List<AllNews> bookmarkList;
+  // ignore: deprecated_member_use
+  List<AllNews> bookmarkList = List<AllNews>();
   Store<AppState> store;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  String data = "";
+  String dataNews = "";
+  String dataTopic = "";
 
-  checkToken() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() {
-      // isHaveToken = sp.getString("token") == null ? false : true;
-      if (isHaveToken) {
-        getDataBookMark();
-      }
-    });
-  }
+  // checkToken() async {
+  //   SharedPreferences sp = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     // isHaveToken = sp.getString("token") == null ? false : true;
+  //     if (isHaveToken) {
+  //       getDataBookMark();
+  //     }
+  //   });
+  // }
 
   getDataBookmarkPref() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     // sp.clear();
     setState(() {
-      data = sp.getString("bookmark");
+      dataNews = sp.getString("bookmark");
+      dataTopic = sp.getString("topic");
       isLoading = false;
     });
   }
 
-  getDataBookMark() async {
-    // userServices.getBookmark().then((value) {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    String data = sp.getString("bookmark");
-
-    List dataObject = data.split(",  ");
-
-    setState(() {
-      store.dispatch(SetBookmarkList(bookmarkList));
-      // store.dispatch(SetBookmarkList());
-      isLoading = false;
+  getDataBookMark() {
+    userServices.getBookmark().then((value) {
+      var jsonObject = AllNewsList.fromJson(value.data);
+      setState(() {
+        store.dispatch(SetBookmarkList(bookmarkList));
+        store.dispatch(SetBookmarkList(List.from(jsonObject.data)));
+        isLoading = false;
+      });
     });
-    // });
   }
 
   loginAction() async {

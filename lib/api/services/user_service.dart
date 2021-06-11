@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:news/api/interceptor/remote_interceptor.dart';
 import 'package:news/helpers/preferences/preferences_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,25 +49,39 @@ class UserServices extends Api {
 
   Future getUserProfile() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    String token = sp.getString("token");
-    print("token :$token");
-    dio.options.headers['Authorization'] = "bearer $token";
-    final response = await wrapApi(
-      () => dio.get<dynamic>(
-        '/usertopic',
-      ),
-    );
-    print("response:$response");
-    return response;
+    String topicsData = sp.getString("topics");
+    List objectData = topicsData == "" ? [] : json.decode(topicsData);
+    return objectData;
+
+    // SharedPreferences sp = await SharedPreferences.getInstance();
+    // String token = sp.getString("token");
+    // print("token :$token");
+    // dio.options.headers['Authorization'] = "bearer $token";
+    // final response = await wrapApi(
+    //   () => dio.get<dynamic>(
+    //     '/usertopic',
+    //   ),
+    // );
+    // print("response:$response");
+    // return response;
   }
 
   Future addBookmark(String news) async {
     PreferencesData preferencesData = PreferencesData();
     SharedPreferences sp = await SharedPreferences.getInstance();
     String oldData = sp.getString("bookmark");
-    String notANewsData = oldData == "" ? "$news" : "$oldData";
-    String newData = oldData == "" ? "$news" : "$notANewsData,  $news";
-    preferencesData.setBookmark(newData);
+    var dataList = [];
+    if (oldData == "") {
+      dataList.add(news);
+      preferencesData.setBookmark(jsonEncode(dataList));
+    } else {
+      print(oldData);
+      List objectData = json.decode(oldData);
+      dataList.addAll(objectData);
+      dataList.add(news);
+      preferencesData.setBookmark(jsonEncode(dataList));
+    }
+
     // String token = sp.getString("token");
     // print("token :$token");
     // dio.options.headers['Authorization'] = "bearer $token";
@@ -82,34 +98,41 @@ class UserServices extends Api {
     // return response;
   }
 
-  Future removeBookmark(String idNews) async {
+  Future removeBookmark(String news) async {
+    PreferencesData preferencesData = PreferencesData();
     SharedPreferences sp = await SharedPreferences.getInstance();
-    String token = sp.getString("token");
-    print("token :$token");
-    dio.options.headers['Authorization'] = "bearer $token";
-    Map<String, dynamic> dataMap = {
-      "news": idNews,
-    };
-    final response = await wrapApi(
-      () => dio.delete<dynamic>(
-        '/bookmark',
-        data: dataMap,
-      ),
-    );
-    print("response:$response");
-    return response;
+    String oldData = sp.getString("bookmark");
+    var dataList = [];
+    List objectData = json.decode(oldData);
+    dataList.addAll(objectData);
+    dataList.removeWhere((element) => element == news);
+    preferencesData.setBookmark(jsonEncode(dataList));
+
+    // SharedPreferences sp = await SharedPreferences.getInstance();
+    // String token = sp.getString("token");
+    // print("token :$token");
+    // dio.options.headers['Authorization'] = "bearer $token";
+    // Map<String, dynamic> dataMap = {
+    //   "news": idNews,
+    // };
+    // final response = await wrapApi(
+    //   () => dio.delete<dynamic>(
+    //     '/bookmark',
+    //     data: dataMap,
+    //   ),
+    // );
+    // print("response:$response");
+    // return response;
   }
 
   Future getBookmark() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    String token = sp.getString("token");
-    print("token :$token");
-    dio.options.headers['Authorization'] = "bearer $token";
-
+    String bookmarkData = sp.getString("bookmark");
+    Map data = {
+      "bookmark": bookmarkData == "" ? [] : jsonDecode(bookmarkData),
+    };
     final response = await wrapApi(
-      () => dio.get<dynamic>(
-        '/bookmark/my',
-      ),
+      () => dio.post<dynamic>('/bookmark/my', data: data),
     );
     print("response:$response");
     return response;

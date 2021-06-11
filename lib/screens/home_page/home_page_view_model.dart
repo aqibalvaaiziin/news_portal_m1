@@ -5,6 +5,7 @@ import 'package:news/api/services/user_service.dart';
 import 'package:news/models/all_news_model.dart';
 import 'package:news/redux/actions/news_state_action.dart';
 import 'package:news/redux/models/app_state_model.dart';
+import 'package:news/widgets/custom_widet.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './home_page.dart';
@@ -72,24 +73,24 @@ abstract class HomePageViewModel extends State<HomePage> {
     });
   }
 
-  bookmarkSlider(String idNews, {bool isAdd = true}) {
+  bookmarkSlider(String news, {bool isAdd = true}) {
     setState(() {
       if (topicsValue == 0) {
-        store.dispatch(SetHomeAllNewsBookmark(idNews));
+        store.dispatch(SetHomeAllNewsBookmark(news));
       } else if (topicsValue == 1) {
-        store.dispatch(SetHomeTravelBookmark(idNews));
+        store.dispatch(SetHomeTravelBookmark(news));
       } else if (topicsValue == 2) {
-        store.dispatch(SetHomeTechBookmark(idNews));
+        store.dispatch(SetHomeTechBookmark(news));
       } else if (topicsValue == 3) {
-        store.dispatch(SetHomeSelebBookmark(idNews));
+        store.dispatch(SetHomeSelebBookmark(news));
       } else if (topicsValue == 4) {
-        store.dispatch(SetHomeSportBookmark(idNews));
+        store.dispatch(SetHomeSportBookmark(news));
       } else if (topicsValue == 5) {
-        store.dispatch(SetHomeHealthBookmark(idNews));
+        store.dispatch(SetHomeHealthBookmark(news));
       }
     });
     if (isAdd) {
-      userServices.addBookmark(idNews).then((value) {
+      userServices.addBookmark(news).then((value) {
         setState(() {
           if (topicsValue == 0) {
             setAllNews();
@@ -104,10 +105,17 @@ abstract class HomePageViewModel extends State<HomePage> {
           } else if (topicsValue == 5) {
             setHealthNews();
           }
+          flushBar(
+            context,
+            "Bookmark",
+            "Berita Berhasil Dihapus ke Bookmark",
+            Icons.check_circle,
+            color: Colors.green,
+          );
         });
       });
     } else {
-      userServices.removeBookmark(idNews).then((value) {
+      userServices.removeBookmark(news).then((value) {
         setState(() {
           if (topicsValue == 0) {
             setAllNews();
@@ -122,6 +130,13 @@ abstract class HomePageViewModel extends State<HomePage> {
           } else if (topicsValue == 5) {
             setHealthNews();
           }
+          flushBar(
+            context,
+            "Bookmark",
+            "Berita Berhasil Dihapus ke Bookmark",
+            Icons.check_circle,
+            color: Colors.green,
+          );
         });
       });
     }

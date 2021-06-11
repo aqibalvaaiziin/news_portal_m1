@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:news/api/services/user_service.dart';
 import 'package:news/helpers/preferences/preferences_data.dart';
-import 'package:news/models/profile_model.dart';
 import 'package:news/screens/navigator_page/navigator_page.dart';
 import 'package:news/screens/on_boarding_page/on_boarding_page.dart';
 import 'package:news/screens/topic_list_page/topic_list_page.dart';
 import 'package:news/widgets/custom_widet.dart';
 import 'package:news/widgets/reoute_navigator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'profile_page.dart';
+import 'topic_page.dart';
 
-abstract class ProfilePageViewModel extends State<ProfilePage> {
+abstract class TopicPageViewModel extends State<TopicPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   double width;
   double height;
@@ -41,9 +40,7 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
       name = sp.getString("name");
       email = sp.getString("email");
       isHaveToken = sp.getString("token") == null ? false : true;
-      if (isHaveToken) {
-        getDataUser();
-      }
+      if (isHaveToken) {}
     });
   }
 
@@ -131,9 +128,9 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
 
   getDataUser() {
     userServices.getUserProfile().then((value) {
-      var jsonObject = GetProfileResponse.fromJson(value.data);
+      print("value:$value");
       setState(() {
-        jsonObject.data.topic.forEach((element) {
+        value.forEach((element) {
           if (element == "News") {
             haveNews = true;
           } else if (element == "Techno") {
@@ -172,7 +169,9 @@ abstract class ProfilePageViewModel extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    checkToken();
+    // checkToken();
+    getDataUser();
+
     if (widget.isFromRegister) {
       successRegister();
     }

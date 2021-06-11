@@ -322,47 +322,43 @@ class _BuildCardListState extends State<BuildCardList> {
                           data.date,
                           fw: FontWeight.w500,
                         ),
-                        isHaveToken
-                            ? InkWell(
-                                borderRadius:
-                                    BorderRadius.circular(width * 0.011),
-                                child: Padding(
-                                  padding: EdgeInsets.all(width * 0.01),
-                                  child: Icon(
-                                    Icons.bookmark,
-                                    size: width * 0.05,
-                                    color: data.isBookmark
-                                        ? ClassColors.maincolor
-                                        : Colors.grey,
-                                  ),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  if (data.isBookmark) {
-                                    flushBar(
-                                      context,
-                                      "Bookmark",
-                                      "Bookmark Berhasil Dihapus",
-                                      Icons.check_circle,
-                                      color: Colors.green,
-                                    );
-
-                                    removeFromBookMark(data.sId);
-                                  } else {
-                                    flushBar(
-                                      context,
-                                      "Bookmark",
-                                      "Berita Berhasil Ditambahkan ke Bookmark",
-                                      Icons.check_circle,
-                                      color: Colors.green,
-                                    );
-                                    addToBookMark(data.sId);
-                                  }
-                                },
-                              )
-                            : SizedBox()
+                        InkWell(
+                          borderRadius: BorderRadius.circular(width * 0.011),
+                          child: Padding(
+                            padding: EdgeInsets.all(width * 0.01),
+                            child: Icon(
+                              Icons.bookmark,
+                              size: width * 0.05,
+                              color: data.isBookmark
+                                  ? ClassColors.maincolor
+                                  : Colors.grey,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            if (data.isBookmark) {
+                              flushBar(
+                                context,
+                                "Bookmark",
+                                "Bookmark Berhasil Dihapus",
+                                Icons.check_circle,
+                                color: Colors.green,
+                              );
+                              removeFromBookMark(data.sId.toString());
+                            } else {
+                              flushBar(
+                                context,
+                                "Bookmark",
+                                "Berita Berhasil Ditambahkan ke Bookmark",
+                                Icons.check_circle,
+                                color: Colors.green,
+                              );
+                              addToBookMark(data.sId.toString());
+                            }
+                          },
+                        )
                       ],
                     ),
                     sarabunText(
