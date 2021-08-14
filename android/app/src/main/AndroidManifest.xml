@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.skripsi.news">
+    package="com.skripsiRevision.news">
+
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="news"
         android:icon="@mipmap/ic_launcher">
